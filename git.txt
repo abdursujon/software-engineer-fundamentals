@@ -517,7 +517,7 @@ git pull
 git checkout -b feature/new-feature
 # ... make changes ...
 git add .
-git commit -m "Add new feature"
+git commit -m "Added new feature"
 git push -u origin feature/new-feature
 # Create Pull Request on GitHub/GitLab
 
