@@ -1,0 +1,633 @@
+================================================================================
+                      COMPLETE GIT COMMANDS REFERENCE GUIDE
+================================================================================
+
+================================================================================
+1. CONFIGURATION
+================================================================================
+
+git config --global user.name "Your Name"       # Set username
+git config --global user.email "you@email.com"  # Set email
+
+git config --global init.defaultBranch main     # Set default branch name
+git config --global core.editor "code --wait"   # Set VS Code as editor
+git config --global core.editor "vim"           # Set Vim as editor
+
+git config --list                   # List all settings
+git config --global --list          # List global settings
+git config user.name                # Show specific setting
+
+git config --global alias.co checkout   # Create alias
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
+
+git config --global credential.helper cache     # Cache credentials temporarily
+git config --global credential.helper store     # Store credentials permanently
+
+================================================================================
+2. REPOSITORY SETUP
+================================================================================
+
+git init                            # Initialize new repository
+                                    Example: cd myproject && git init
+
+git init --bare                     # Create bare repository (for servers)
+
+git clone <url>                     # Clone repository
+                                    Example: git clone https://github.com/user/repo.git
+
+git clone <url> <folder>            # Clone into specific folder
+                                    Example: git clone https://github.com/user/repo.git myproject
+
+git clone --depth 1 <url>           # Shallow clone (only latest commit)
+git clone --branch <branch> <url>   # Clone specific branch
+git clone --recursive <url>         # Clone with submodules
+
+================================================================================
+3. BASIC WORKFLOW
+================================================================================
+
+git status                          # Check working tree status
+git status -s                       # Short status format
+git status -b                       # Show branch info
+
+git add <file>                      # Stage specific file
+                                    Example: git add index.html
+
+git add .                           # Stage all changes in current directory
+git add -A                          # Stage all changes (entire repo)
+git add *.js                        # Stage all .js files
+git add -p                          # Interactive staging (choose hunks)
+
+git commit -m "message"             # Commit with message
+                                    Example: git commit -m "Add login feature"
+
+git commit -am "message"            # Stage tracked files and commit
+git commit --amend                  # Modify last commit (message/files)
+git commit --amend -m "new message" # Change last commit message
+git commit --amend --no-edit        # Add staged files to last commit
+git commit --allow-empty -m "msg"   # Create empty commit
+
+git push                            # Push to remote
+git push origin main                # Push to specific remote/branch
+git push -u origin main             # Push and set upstream
+git push --force                    # Force push (DANGEROUS - rewrites history)
+git push --force-with-lease         # Safer force push (checks remote first)
+git push --tags                     # Push all tags
+git push origin --delete <branch>   # Delete remote branch
+
+git pull                            # Fetch and merge
+git pull origin main                # Pull from specific remote/branch
+git pull --rebase                   # Fetch and rebase instead of merge
+git pull --rebase origin main       # Rebase on specific branch
+
+git fetch                           # Download remote changes (don't merge)
+git fetch origin                    # Fetch from specific remote
+git fetch --all                     # Fetch from all remotes
+git fetch --prune                   # Remove deleted remote branches
+
+================================================================================
+4. BRANCHING
+================================================================================
+
+git branch                          # List local branches
+git branch -a                       # List all branches (local + remote)
+git branch -r                       # List remote branches
+git branch -v                       # List branches with last commit
+git branch -vv                      # Show tracking branches
+
+git branch <name>                   # Create new branch
+                                    Example: git branch feature/login
+
+git branch -d <name>                # Delete branch (if merged)
+git branch -D <name>                # Force delete branch
+git branch -m <old> <new>           # Rename branch
+git branch -m <new>                 # Rename current branch
+
+git checkout <branch>               # Switch to branch
+                                    Example: git checkout develop
+
+git checkout -b <branch>            # Create and switch to branch
+                                    Example: git checkout -b feature/signup
+
+git checkout -                      # Switch to previous branch
+git checkout -b <branch> <remote>   # Create branch from remote
+
+git switch <branch>                 # Switch branch (newer command)
+git switch -c <branch>              # Create and switch (newer command)
+git switch -                        # Switch to previous branch
+
+git branch --set-upstream-to=origin/<branch>    # Set upstream branch
+
+================================================================================
+5. MERGING
+================================================================================
+
+git merge <branch>                  # Merge branch into current
+                                    Example: git checkout main && git merge feature/login
+
+git merge --no-ff <branch>          # Merge with merge commit (no fast-forward)
+git merge --squash <branch>         # Squash all commits into one
+git merge --abort                   # Abort merge in progress
+
+# Merge conflict resolution:
+# 1. Open conflicted files
+# 2. Look for <<<<<<< HEAD, =======, >>>>>>> markers
+# 3. Edit to resolve conflicts
+# 4. git add <resolved-files>
+# 5. git commit
+
+git mergetool                       # Open merge tool
+
+================================================================================
+6. REBASING
+================================================================================
+
+git rebase <branch>                 # Rebase current branch onto another
+                                    Example: git checkout feature && git rebase main
+
+git rebase -i HEAD~3                # Interactive rebase last 3 commits
+                                    # pick = keep commit
+                                    # reword = change commit message
+                                    # edit = stop to amend
+                                    # squash = combine with previous
+                                    # fixup = squash without message
+                                    # drop = remove commit
+
+git rebase -i <commit>              # Interactive rebase from commit
+git rebase --onto <new> <old>       # Rebase onto different base
+git rebase --continue               # Continue after resolving conflicts
+git rebase --abort                  # Abort rebase
+git rebase --skip                   # Skip current commit
+
+================================================================================
+7. STASHING
+================================================================================
+
+git stash                           # Stash working changes
+git stash push -m "message"         # Stash with message
+                                    Example: git stash push -m "WIP: login form"
+
+git stash list                      # List all stashes
+git stash show                      # Show latest stash changes
+git stash show -p                   # Show stash diff
+git stash show stash@{1}            # Show specific stash
+
+git stash pop                       # Apply and remove latest stash
+git stash apply                     # Apply latest stash (keep in list)
+git stash apply stash@{1}           # Apply specific stash
+git stash drop                      # Remove latest stash
+git stash drop stash@{1}            # Remove specific stash
+git stash clear                     # Remove all stashes
+
+git stash branch <branch>           # Create branch from stash
+git stash push -u                   # Include untracked files
+git stash push --keep-index         # Stash but keep staged changes
+
+================================================================================
+8. VIEWING HISTORY
+================================================================================
+
+git log                             # Show commit history
+git log --oneline                   # Compact format
+git log --oneline -10               # Last 10 commits
+git log --graph                     # Show branch graph
+git log --graph --oneline --all     # Full graph all branches
+
+git log -p                          # Show patches (diffs)
+git log --stat                      # Show file statistics
+git log --name-only                 # Show changed files
+git log --name-status               # Show changed files with status
+
+git log --author="name"             # Filter by author
+git log --since="2024-01-01"        # Filter by date
+git log --until="2024-12-31"
+git log --grep="bug"                # Filter by commit message
+git log -S "function"               # Search code changes (pickaxe)
+git log -- <file>                   # History of specific file
+
+git log main..feature               # Commits in feature not in main
+git log feature..main               # Commits in main not in feature
+
+git shortlog                        # Summarized log by author
+git shortlog -sn                    # Commit count by author
+
+git show <commit>                   # Show commit details
+                                    Example: git show abc1234
+
+git show <commit>:<file>            # Show file at specific commit
+
+================================================================================
+9. DIFFERENCES
+================================================================================
+
+git diff                            # Working directory vs staging
+git diff --staged                   # Staging vs last commit
+git diff --cached                   # Same as --staged
+
+git diff <commit>                   # Working dir vs commit
+git diff <commit1> <commit2>        # Between two commits
+git diff <branch1> <branch2>        # Between branches
+git diff HEAD~3                     # Compare with 3 commits ago
+
+git diff <file>                     # Diff specific file
+git diff --name-only                # Show only changed file names
+git diff --name-status              # Show names with status (A/M/D)
+git diff --stat                     # Show statistics
+
+git diff --word-diff                # Word-level diff
+git diff --color-words              # Colored word diff
+
+================================================================================
+10. UNDOING CHANGES
+================================================================================
+
+# Discard working directory changes
+git checkout -- <file>              # Discard changes in file
+git checkout -- .                   # Discard all changes
+git restore <file>                  # Discard changes (newer command)
+git restore .                       # Discard all changes
+
+# Unstage files
+git reset HEAD <file>               # Unstage file
+git reset HEAD .                    # Unstage all
+git restore --staged <file>         # Unstage (newer command)
+
+# Reset commits
+git reset --soft HEAD~1             # Undo commit, keep changes staged
+git reset --mixed HEAD~1            # Undo commit, keep changes unstaged (default)
+git reset --hard HEAD~1             # Undo commit, discard changes (DANGEROUS)
+
+git reset --soft <commit>           # Reset to commit, keep changes staged
+git reset --hard <commit>           # Reset to commit, discard all (DANGEROUS)
+
+# Revert (create new commit that undoes)
+git revert <commit>                 # Revert single commit
+                                    Example: git revert abc1234
+
+git revert HEAD                     # Revert last commit
+git revert HEAD~3..HEAD             # Revert last 3 commits
+git revert --no-commit <commit>     # Revert without auto-commit
+
+# Clean untracked files
+git clean -n                        # Dry run (show what would be deleted)
+git clean -f                        # Delete untracked files
+git clean -fd                       # Delete untracked files and directories
+git clean -fX                       # Delete only ignored files
+git clean -fx                       # Delete all untracked (including ignored)
+
+================================================================================
+11. REMOTE REPOSITORIES
+================================================================================
+
+git remote                          # List remotes
+git remote -v                       # List remotes with URLs
+
+git remote add <name> <url>         # Add remote
+                                    Example: git remote add origin https://github.com/user/repo.git
+
+git remote remove <name>            # Remove remote
+git remote rename <old> <new>       # Rename remote
+git remote set-url <name> <url>     # Change remote URL
+git remote show <name>              # Show remote details
+
+git remote prune origin             # Remove stale remote tracking branches
+
+================================================================================
+12. TAGS
+================================================================================
+
+git tag                             # List tags
+git tag -l "v1.*"                   # List tags matching pattern
+
+git tag <name>                      # Create lightweight tag
+                                    Example: git tag v1.0.0
+
+git tag -a <name> -m "message"      # Create annotated tag
+                                    Example: git tag -a v1.0.0 -m "Release version 1.0.0"
+
+git tag -a <name> <commit>          # Tag specific commit
+git tag -d <name>                   # Delete local tag
+
+git push origin <tag>               # Push single tag
+git push origin --tags              # Push all tags
+git push origin --delete <tag>      # Delete remote tag
+
+git show <tag>                      # Show tag details
+git checkout <tag>                  # Checkout tag (detached HEAD)
+git checkout -b <branch> <tag>      # Create branch from tag
+
+================================================================================
+13. CHERRY-PICK
+================================================================================
+
+git cherry-pick <commit>            # Apply commit to current branch
+                                    Example: git cherry-pick abc1234
+
+git cherry-pick <c1> <c2> <c3>      # Cherry-pick multiple commits
+git cherry-pick <start>..<end>      # Cherry-pick range of commits
+
+git cherry-pick --no-commit <commit>    # Apply without committing
+git cherry-pick --continue          # Continue after conflict resolution
+git cherry-pick --abort             # Abort cherry-pick
+git cherry-pick --skip              # Skip current commit
+
+================================================================================
+14. BISECT (Finding Bugs)
+================================================================================
+
+git bisect start                    # Start bisect session
+git bisect bad                      # Mark current commit as bad
+git bisect good <commit>            # Mark known good commit
+                                    Example: git bisect good v1.0.0
+
+# Git will checkout commits for you to test
+git bisect good                     # Mark as good
+git bisect bad                      # Mark as bad
+
+git bisect reset                    # End bisect session
+git bisect log                      # Show bisect log
+git bisect run <script>             # Automated bisect with script
+
+================================================================================
+15. SUBMODULES
+================================================================================
+
+git submodule add <url> <path>      # Add submodule
+                                    Example: git submodule add https://github.com/lib/lib.git libs/lib
+
+git submodule init                  # Initialize submodules
+git submodule update                # Update submodules
+git submodule update --init         # Init and update
+git submodule update --init --recursive     # Include nested submodules
+
+git clone --recursive <url>         # Clone with submodules
+
+git submodule status                # Show submodule status
+git submodule foreach <command>     # Run command in each submodule
+                                    Example: git submodule foreach git pull
+
+git submodule deinit <path>         # Unregister submodule
+git rm <path>                       # Remove submodule
+
+================================================================================
+16. WORKTREES (Multiple Working Directories)
+================================================================================
+
+git worktree add <path> <branch>    # Create new worktree
+                                    Example: git worktree add ../hotfix hotfix-branch
+
+git worktree add -b <branch> <path> # Create worktree with new branch
+git worktree list                   # List worktrees
+git worktree remove <path>          # Remove worktree
+git worktree prune                  # Clean up stale worktrees
+
+================================================================================
+17. BLAME & INVESTIGATION
+================================================================================
+
+git blame <file>                    # Show who changed each line
+                                    Example: git blame src/app.js
+
+git blame -L 10,20 <file>           # Blame specific lines
+git blame -w <file>                 # Ignore whitespace changes
+git blame -C <file>                 # Detect moved/copied lines
+
+git log -p <file>                   # Full history of file changes
+git log --follow <file>             # Follow renames
+
+================================================================================
+18. REFLOG (Recovery)
+================================================================================
+
+git reflog                          # Show reference log
+git reflog show <branch>            # Show reflog for branch
+git reflog expire --expire=now --all    # Expire reflog entries
+
+# Recover lost commits
+git checkout <reflog-hash>          # Checkout lost commit
+git branch <name> <reflog-hash>     # Create branch from lost commit
+                                    Example: git branch recovered HEAD@{2}
+
+================================================================================
+19. PATCHES
+================================================================================
+
+git format-patch <commit>           # Create patch from commit
+git format-patch -1 HEAD            # Create patch for last commit
+git format-patch main..feature      # Create patches for branch
+
+git apply <patch>                   # Apply patch
+git apply --check <patch>           # Test if patch applies
+git am <patch>                      # Apply patch as commit
+
+git diff > changes.patch            # Create diff patch
+git apply changes.patch             # Apply diff patch
+
+================================================================================
+20. HOOKS (Automation)
+================================================================================
+
+# Hooks are scripts in .git/hooks/
+# Common hooks:
+# - pre-commit      : Before commit (linting, tests)
+# - commit-msg      : Validate commit message
+# - pre-push        : Before push (tests)
+# - post-merge      : After merge
+# - post-checkout   : After checkout
+
+# Make hook executable:
+chmod +x .git/hooks/pre-commit
+
+# Example pre-commit hook:
+# #!/bin/sh
+# npm run lint
+# npm run test
+
+================================================================================
+21. ADVANCED TECHNIQUES
+================================================================================
+
+# Squash last N commits
+git reset --soft HEAD~N
+git commit -m "Combined commit"
+
+# Split a commit
+git rebase -i HEAD~N
+# Mark commit as 'edit'
+git reset HEAD~
+git add <files>
+git commit -m "First part"
+git add <files>
+git commit -m "Second part"
+git rebase --continue
+
+# Find deleted file
+git log --all --full-history -- "**/filename"
+
+# Restore deleted file
+git checkout <commit>^ -- <file>
+
+# List files in commit
+git diff-tree --no-commit-id --name-only -r <commit>
+
+# Show file at specific commit
+git show <commit>:<file>
+
+# Archive repository
+git archive --format=zip HEAD > archive.zip
+git archive --format=tar.gz HEAD > archive.tar.gz
+
+================================================================================
+22. GIT ALIASES (Productivity)
+================================================================================
+
+# Add these to ~/.gitconfig or use git config --global
+
+[alias]
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    visual = !gitk
+
+    # Useful aliases
+    lg = log --oneline --graph --all --decorate
+    ll = log --pretty=format:'%h %ad | %s%d [%an]' --date=short
+    undo = reset --soft HEAD~1
+    amend = commit --amend --no-edit
+    wip = !git add -A && git commit -m 'WIP'
+    branches = branch -a
+    tags = tag -l
+    stashes = stash list
+
+    # Show contributors
+    contributors = shortlog -sn
+
+================================================================================
+23. COMMON WORKFLOWS
+================================================================================
+
+# Feature Branch Workflow
+git checkout main
+git pull
+git checkout -b feature/new-feature
+# ... make changes ...
+git add .
+git commit -m "Add new feature"
+git push -u origin feature/new-feature
+# Create Pull Request on GitHub/GitLab
+
+# Hotfix Workflow
+git checkout main
+git pull
+git checkout -b hotfix/critical-fix
+# ... fix bug ...
+git commit -am "Fix critical bug"
+git push -u origin hotfix/critical-fix
+
+# Sync Fork with Upstream
+git remote add upstream <original-repo-url>
+git fetch upstream
+git checkout main
+git merge upstream/main
+git push origin main
+
+# Rebase Feature Branch on Main
+git checkout feature/my-feature
+git fetch origin
+git rebase origin/main
+# Resolve conflicts if any
+git push --force-with-lease
+
+================================================================================
+24. GITHUB/GITLAB CLI (gh / glab)
+================================================================================
+
+# GitHub CLI (gh)
+gh repo create                      # Create repository
+gh repo clone <repo>                # Clone repository
+gh pr create                        # Create pull request
+gh pr list                          # List pull requests
+gh pr checkout <number>             # Checkout pull request
+gh pr merge                         # Merge pull request
+gh issue create                     # Create issue
+gh issue list                       # List issues
+
+# GitLab CLI (glab)
+glab mr create                      # Create merge request
+glab mr list                        # List merge requests
+glab issue create                   # Create issue
+
+================================================================================
+25. TROUBLESHOOTING
+================================================================================
+
+# Fix "detached HEAD"
+git checkout <branch>               # Go back to branch
+git checkout -b <new-branch>        # Or create branch from current state
+
+# Undo pushed commit
+git revert <commit>
+git push
+
+# Fix wrong branch commit
+git checkout correct-branch
+git cherry-pick <commit>
+git checkout wrong-branch
+git reset --hard HEAD~1
+
+# Remove file from all history (DANGEROUS)
+git filter-branch --force --index-filter \
+  'git rm --cached --ignore-unmatch <file>' \
+  --prune-empty --tag-name-filter cat -- --all
+
+# Or use git-filter-repo (recommended):
+git filter-repo --path <file> --invert-paths
+
+# Fix corrupted repository
+git fsck                            # Check integrity
+git gc                              # Garbage collection
+git prune                           # Remove unreachable objects
+
+================================================================================
+26. BEST PRACTICES
+================================================================================
+
+# Commit Messages
+# - Use imperative mood: "Add feature" not "Added feature"
+# - First line: 50 chars or less
+# - Blank line after first line
+# - Body: 72 chars per line, explain what and why
+
+# Example:
+# Add user authentication
+#
+# Implement JWT-based authentication system with
+# login, logout, and token refresh endpoints.
+#
+# - Add User model with password hashing
+# - Create auth middleware
+# - Add login/logout routes
+
+# Branch Naming
+# feature/description    - New features
+# bugfix/description     - Bug fixes
+# hotfix/description     - Urgent fixes
+# release/version        - Release branches
+# chore/description      - Maintenance tasks
+
+# Before Pushing
+git status                          # Check what's staged
+git diff --staged                   # Review changes
+git log origin/main..HEAD           # Review commits to push
+
+# Keep History Clean
+git pull --rebase                   # Rebase instead of merge
+git commit --amend                  # Fix last commit
+git rebase -i                       # Clean up commits before PR
+
+================================================================================

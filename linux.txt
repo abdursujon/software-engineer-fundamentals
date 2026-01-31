@@ -1,40 +1,484 @@
-create a shortcut to access root just by typing root: alias root='cd ~'
-list aliases: compgen -a
+================================================================================
+                    COMPLETE LINUX COMMANDS REFERENCE GUIDE
+================================================================================
 
-bulk save aliases
-first laod the bash file: nano ~/.bashrc
-paste something like this depending one what you would like to add: 
-alias root='cd ~'
-alias project='cd /home/sujon/Projects'
-alias jsex='cd ~/Projects/complete-javascript-exercise'
-alias spring='cd ~/Projects/spring-data-analysis-api'
-alias transform='cd ~/Projects/transform-my-raw-data'
-alias sputnik='cd ~/Projects/sputnik-vehicle-hire'
-alias javaex='cd ~/Projects/java-complete-data-structure'
-alias portfolio='cd ~/Projects/sujons.com'
-alias ns='cd ~/Projects/network-and-security' 
+================================================================================
+1. NAVIGATION
+================================================================================
 
-print the list of alias that you just created: alias -p
-to print only specific alias output: alias -p | cut -d' ' -f2 
-create a file: touch file.txt
-edit a file: nano file.txt
-echo a file name: echo file.txt
-delete a file: rm file.txt
-print content of a file in terminal: cat file.txt
-move a file to different directory: mv file.txt ~/Documents/
- 
-open a file: file.txt or specify app such as libreoffice file.odt
-move a file to different directory: mv file.txt ~/linux/
-basic help with commands: help
-help with list all extensive list of commands:compgen -c
-to open an application simply type the name: spotify (although has to match the name stored in compgen -c)
+pwd                         # Print current directory
+                            Example: pwd → /home/sujon/Projects
 
-start vscode: code
-start terminal: ctrl+alt+t
+cd /path/to/dir             # Change directory
+                            Example: cd /home/sujon/Documents
 
-save a file in nano: ctrl + o then enter 
-exit nano: ctrl + x
-grep file in specific: compgen -c | grep '^v'
-this will print eveyting in compgen start with v
+cd ~                        # Go to home directory
+cd ..                       # Go up one directory
+cd -                        # Go to previous directory
+cd ../..                    # Go up two directories
+
+ls                          # List files in current directory
+ls -l                       # List with details (permissions, size, date)
+ls -a                       # List all files including hidden
+ls -la                      # List all with details
+ls -lh                      # List with human-readable sizes
+ls -lt                      # List sorted by modification time
+
+tree                        # Show directory structure as tree
+tree -L 2                   # Show tree with depth of 2 levels
+
+================================================================================
+2. FILE OPERATIONS
+================================================================================
+
+touch file.txt              # Create empty file
+                            Example: touch notes.txt
+
+cat file.txt                # Display file content
+                            Example: cat notes.txt
+
+head file.txt               # Show first 10 lines
+head -n 20 file.txt         # Show first 20 lines
+
+tail file.txt               # Show last 10 lines
+tail -n 20 file.txt         # Show last 20 lines
+tail -f log.txt             # Follow file in real-time (great for logs)
+
+less file.txt               # View file with scrolling (q to quit)
+more file.txt               # View file page by page
+
+cp file.txt backup.txt      # Copy file
+                            Example: cp report.txt report_backup.txt
+
+cp -r folder/ newfolder/    # Copy directory recursively
+                            Example: cp -r project/ project_backup/
+
+mv file.txt /path/          # Move file to directory
+                            Example: mv report.txt ~/Documents/
+
+mv old.txt new.txt          # Rename file
+                            Example: mv draft.txt final.txt
+
+rm file.txt                 # Delete file
+rm -r folder/               # Delete directory and contents
+rm -rf folder/              # Force delete without confirmation (CAREFUL!)
+rm -i file.txt              # Delete with confirmation prompt
+
+mkdir dirname               # Create directory
+                            Example: mkdir projects
+
+mkdir -p a/b/c              # Create nested directories
+                            Example: mkdir -p src/components/ui
+
+rmdir dirname               # Remove empty directory
+
+ln -s target link           # Create symbolic link
+                            Example: ln -s /var/log/syslog ~/logs
+
+================================================================================
+3. FILE VIEWING & EDITING
+================================================================================
+
+nano file.txt               # Edit file with nano
+                            Ctrl+O → Save
+                            Ctrl+X → Exit
+                            Ctrl+K → Cut line
+                            Ctrl+U → Paste line
+
+vim file.txt                # Edit file with vim
+                            i → Insert mode
+                            Esc → Normal mode
+                            :w → Save
+                            :q → Quit
+                            :wq → Save and quit
+                            :q! → Quit without saving
+                            dd → Delete line
+                            yy → Copy line
+                            p → Paste
+
+code file.txt               # Open in VS Code
+code .                      # Open current folder in VS Code
+
+================================================================================
+4. FILE SEARCH
+================================================================================
+
+find . -name "*.txt"        # Find files by name
+                            Example: find /home -name "*.pdf"
+
+find . -type f -size +10M   # Find files larger than 10MB
+find . -type d -name "src"  # Find directories named "src"
+find . -mtime -7            # Find files modified in last 7 days
+
+locate filename             # Fast search using database
+                            Example: locate report.pdf
+
+which command               # Find location of command
+                            Example: which python → /usr/bin/python
+
+whereis command             # Find binary, source, and manual
+                            Example: whereis git
+
+================================================================================
+5. TEXT SEARCH & PROCESSING
+================================================================================
+
+grep "pattern" file.txt     # Search for pattern in file
+                            Example: grep "error" log.txt
+
+grep -i "pattern" file      # Case-insensitive search
+grep -r "pattern" dir/      # Recursive search in directory
+grep -n "pattern" file      # Show line numbers
+grep -v "pattern" file      # Show lines NOT matching
+grep -c "pattern" file      # Count matching lines
+
+grep -E "regex" file        # Use extended regex
+                            Example: grep -E "error|warning" log.txt
+
+wc file.txt                 # Count lines, words, characters
+wc -l file.txt              # Count lines only
+wc -w file.txt              # Count words only
+
+sort file.txt               # Sort lines alphabetically
+sort -n file.txt            # Sort numerically
+sort -r file.txt            # Reverse sort
+
+uniq file.txt               # Remove duplicate adjacent lines
+sort file.txt | uniq        # Remove all duplicates
+
+cut -d',' -f1 file.csv      # Extract first column (comma delimiter)
+                            Example: cut -d':' -f1 /etc/passwd
+
+awk '{print $1}' file       # Print first column
+                            Example: awk '{print $1, $3}' data.txt
+
+sed 's/old/new/g' file      # Replace text
+                            Example: sed 's/foo/bar/g' file.txt
+
+================================================================================
+6. PERMISSIONS
+================================================================================
+
+chmod 755 file              # Set permissions (rwxr-xr-x)
+chmod +x script.sh          # Make file executable
+chmod -w file               # Remove write permission
+chmod u+x file              # Add execute for user only
+
+# Permission numbers:
+# 7 = rwx (read+write+execute)
+# 6 = rw- (read+write)
+# 5 = r-x (read+execute)
+# 4 = r-- (read only)
+# 0 = --- (no permission)
+
+chown user file             # Change file owner
+                            Example: chown sujon file.txt
+
+chown user:group file       # Change owner and group
+                            Example: chown sujon:developers project/
+
+chown -R user dir/          # Change ownership recursively
+
+================================================================================
+7. SYSTEM INFORMATION
+================================================================================
+
+uname -a                    # Full system information
+hostname                    # Show computer name
+uptime                      # Show how long system is running
+
+whoami                      # Current username
+id                          # User ID and group info
+
+df -h                       # Disk space usage (human-readable)
+du -sh folder/              # Size of folder
+du -sh *                    # Size of all items in current dir
+
+free -h                     # Memory usage
+top                         # Live process viewer (q to quit)
+htop                        # Better process viewer (if installed)
+
+lscpu                       # CPU information
+lsblk                       # List block devices (disks)
+lsusb                       # List USB devices
+lspci                       # List PCI devices
+
+cat /etc/os-release         # OS version info
+uname -r                    # Kernel version
+
+================================================================================
+8. PROCESS MANAGEMENT
+================================================================================
+
+ps                          # Show current processes
+ps aux                      # Show all processes with details
+ps aux | grep firefox       # Find specific process
+
+kill PID                    # Kill process by ID
+                            Example: kill 1234
+
+kill -9 PID                 # Force kill process
+killall processname         # Kill all processes by name
+                            Example: killall firefox
+
+pkill -f "pattern"          # Kill processes matching pattern
+
+jobs                        # List background jobs
+bg                          # Resume job in background
+fg                          # Bring job to foreground
+
+command &                   # Run command in background
+                            Example: ./script.sh &
+
+nohup command &             # Run command that survives logout
+
+================================================================================
+9. NETWORKING
+================================================================================
+
+ping google.com             # Test connectivity
+                            Example: ping -c 4 google.com (4 pings only)
+
+curl https://example.com    # Fetch URL content
+curl -O url                 # Download file from URL
+curl -I url                 # Get headers only
+
+wget url                    # Download file
+                            Example: wget https://example.com/file.zip
+
+wget -c url                 # Resume interrupted download
+
+ifconfig                    # Network interface info (older)
+ip a                        # Network interface info (newer)
+ip addr show                # Show IP addresses
+
+netstat -tuln               # Show listening ports
+ss -tuln                    # Show listening ports (newer)
+
+ssh user@host               # Connect to remote server
+                            Example: ssh sujon@192.168.1.100
+
+scp file user@host:/path    # Copy file to remote
+                            Example: scp report.txt sujon@server:/home/sujon/
+
+scp user@host:/path file    # Copy file from remote
+
+rsync -avz src/ dest/       # Sync directories
+                            Example: rsync -avz ~/project/ server:/backup/
+
+================================================================================
+10. PACKAGE MANAGEMENT (Debian/Ubuntu)
+================================================================================
+
+sudo apt update             # Update package list
+sudo apt upgrade            # Upgrade all packages
+sudo apt install package    # Install package
+                            Example: sudo apt install git
+
+sudo apt remove package     # Remove package
+sudo apt autoremove         # Remove unused packages
+sudo apt search keyword     # Search for packages
+
+dpkg -i package.deb         # Install .deb file
+dpkg -l                     # List installed packages
+
+================================================================================
+11. COMPRESSION & ARCHIVES
+================================================================================
+
+tar -cvf archive.tar dir/   # Create tar archive
+tar -xvf archive.tar        # Extract tar archive
+tar -czvf archive.tar.gz dir/   # Create compressed tar.gz
+tar -xzvf archive.tar.gz    # Extract tar.gz
+
+zip -r archive.zip dir/     # Create zip archive
+unzip archive.zip           # Extract zip archive
+
+gzip file                   # Compress file (replaces original)
+gunzip file.gz              # Decompress file
+
+================================================================================
+12. REDIRECTION & PIPES
+================================================================================
+
+command > file              # Redirect output to file (overwrite)
+                            Example: ls -l > filelist.txt
+
+command >> file             # Append output to file
+                            Example: echo "new line" >> notes.txt
+
+command 2> file             # Redirect errors to file
+command &> file             # Redirect both output and errors
+
+command1 | command2         # Pipe output to next command
+                            Example: ls -l | grep ".txt"
+                            Example: cat file.txt | sort | uniq
+                            Example: ps aux | grep python
+
+command < file              # Use file as input
+                            Example: sort < unsorted.txt
+
+================================================================================
+13. ALIASES & SHELL CONFIG
+================================================================================
+
+alias ll='ls -la'           # Create alias (temporary)
+alias project='cd ~/Projects'
+
+unalias ll                  # Remove alias
+
+# Permanent aliases - add to ~/.bashrc or ~/.zshrc:
+nano ~/.bashrc              # Edit bash config
+source ~/.bashrc            # Reload config
+
+alias                       # List all aliases
+alias -p                    # Print all aliases
+
+compgen -a                  # List all aliases
+compgen -c                  # List all commands
+
+================================================================================
+14. HISTORY & SHORTCUTS
+================================================================================
+
+history                     # Show command history
+history | grep "pattern"    # Search history
+!n                          # Run command number n from history
+!!                          # Run last command
+!$                          # Last argument of previous command
+
+Ctrl+R                      # Reverse search history
+Ctrl+C                      # Cancel current command
+Ctrl+Z                      # Suspend current command
+Ctrl+D                      # Exit terminal
+Ctrl+L                      # Clear screen
+Ctrl+A                      # Go to beginning of line
+Ctrl+E                      # Go to end of line
+Ctrl+U                      # Clear line before cursor
+Ctrl+K                      # Clear line after cursor
+
+Tab                         # Autocomplete
+Tab Tab                     # Show all completions
+
+================================================================================
+15. USER MANAGEMENT
+================================================================================
+
+sudo command                # Run as superuser
+                            Example: sudo apt update
+
+su - username               # Switch user
+sudo su                     # Switch to root
+
+useradd username            # Create user
+passwd username             # Set/change password
+userdel username            # Delete user
+
+groupadd groupname          # Create group
+usermod -aG group user      # Add user to group
+                            Example: usermod -aG docker sujon
+
+================================================================================
+16. DISK & STORAGE
+================================================================================
+
+mount /dev/sdb1 /mnt        # Mount device
+umount /mnt                 # Unmount device
+
+fdisk -l                    # List disk partitions
+lsblk                       # List block devices
+
+df -h                       # Disk space usage
+du -sh *                    # Size of current directory items
+du -sh folder/              # Size of specific folder
+
+ncdu                        # Interactive disk usage (if installed)
+
+================================================================================
+17. SERVICES (systemd)
+================================================================================
+
+sudo systemctl start service    # Start service
+                                Example: sudo systemctl start nginx
+
+sudo systemctl stop service     # Stop service
+sudo systemctl restart service  # Restart service
+sudo systemctl status service   # Check service status
+sudo systemctl enable service   # Enable at boot
+sudo systemctl disable service  # Disable at boot
+
+sudo systemctl list-units       # List all services
+
+journalctl -u service           # View service logs
+journalctl -f                   # Follow system logs
+
+================================================================================
+18. ENVIRONMENT VARIABLES
+================================================================================
+
+echo $PATH                  # Print PATH variable
+echo $HOME                  # Print home directory
+echo $USER                  # Print username
+printenv                    # Print all environment variables
+
+export VAR="value"          # Set environment variable (temporary)
+                            Example: export JAVA_HOME=/usr/lib/jvm/java-11
+
+# Permanent - add to ~/.bashrc:
+export PATH="$PATH:/new/path"
+
+================================================================================
+19. DATE & TIME
+================================================================================
+
+date                        # Show current date and time
+date +%Y-%m-%d              # Format: 2024-01-15
+date +%H:%M:%S              # Format: 14:30:45
+
+cal                         # Show calendar
+cal 2024                    # Show year calendar
+
+timedatectl                 # Show timezone info
+timedatectl set-timezone America/New_York  # Set timezone
+
+================================================================================
+20. USEFUL COMMAND COMBINATIONS
+================================================================================
+
+# Find and delete files
+find . -name "*.log" -delete
+
+# Find large files
+find / -size +100M -type f 2>/dev/null
+
+# Count files in directory
+ls -1 | wc -l
+
+# Monitor log file
+tail -f /var/log/syslog
+
+# Find text in all files
+grep -r "TODO" --include="*.py" .
+
+# Disk usage sorted
+du -sh * | sort -h
+
+# Kill process on port
+kill $(lsof -t -i:3000)
+
+# Backup with date
+cp file.txt file_$(date +%Y%m%d).txt
+
+# Empty a file
+> file.txt
+
+# Create file with content
+echo "content" > file.txt
+
+# Compare two files
+diff file1.txt file2.txt
+
+# Watch command output
+watch -n 2 "df -h"          # Run df -h every 2 seconds
 
 
